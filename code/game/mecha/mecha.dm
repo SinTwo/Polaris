@@ -39,6 +39,7 @@
 	var/datum/effect/effect/system/spark_spread/spark_system = new
 	var/lights = 0
 	var/lights_power = 6
+	var/force = 0
 
 	//inner atmos
 	var/use_internal_tank = 0
@@ -987,6 +988,11 @@
 
 	if (usr.stat || !ishuman(usr))
 		return
+
+	if (usr.buckled)
+		usr << "<span class='warning'>You can't climb into the exosuit while buckled!</span>"
+		return
+
 	src.log_message("[usr] tries to move in.")
 	if(iscarbon(usr))
 		var/mob/living/carbon/C = usr

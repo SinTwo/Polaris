@@ -15,6 +15,7 @@ var/list/admin_verbs_default = list(
 var/list/admin_verbs_admin = list(
 	/client/proc/player_panel_new, /*shows an interface for all players, with links to various panels*/
 	/datum/admins/proc/set_tcrystals,
+	/datum/admins/proc/add_tcrystals,
 	/client/proc/invisimin,				/*allows our mob to go invisible/visible*/
 //	/datum/admins/proc/show_traitor_panel,	/*interface which shows a mob's mind*/ -Removed due to rare practical use. Moved to debug verbs ~Errorage
 	/datum/admins/proc/show_game_mode,  /*Configuration window for the current game mode.*/
@@ -132,9 +133,6 @@ var/list/admin_verbs_spawn = list(
 	/datum/admins/proc/spawn_plant,
 	/datum/admins/proc/spawn_atom,		/*allows us to spawn instances*/
 	/client/proc/respawn_character,
-	/client/proc/FireLaser,
-	/client/proc/FireCannons,
-	/client/proc/ChangeIcarusPosition,
 	/client/proc/virus2_editor,
 	/client/proc/spawn_chemdisp_cartridge
 	)
@@ -402,9 +400,9 @@ var/list/admin_verbs_mentor = list(
 	set category = "Admin"
 	set name = "Aghost"
 	if(!holder)	return
-	if(istype(mob,/mob/dead/observer))
+	if(istype(mob,/mob/observer/dead))
 		//re-enter
-		var/mob/dead/observer/ghost = mob
+		var/mob/observer/dead/ghost = mob
 		if(!is_mentor(usr.client))
 			ghost.can_reenter_corpse = 1
 		if(ghost.can_reenter_corpse)
@@ -420,7 +418,7 @@ var/list/admin_verbs_mentor = list(
 	else
 		//ghostize
 		var/mob/body = mob
-		var/mob/dead/observer/ghost = body.ghostize(1)
+		var/mob/observer/dead/ghost = body.ghostize(1)
 		ghost.admin_ghosted = 1
 		if(body)
 			body.teleop = ghost
@@ -604,22 +602,6 @@ var/list/admin_verbs_mentor = list(
 			explosion(epicenter, devastation_range, heavy_impact_range, light_impact_range, flash_range)
 	message_admins("\blue [ckey] creating an admin explosion at [epicenter.loc].")
 	feedback_add_details("admin_verb","DB") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
-
-/client/proc/give_disease(mob/T as mob in mob_list) // -- Giacom
-	set category = "Fun"
-	set name = "Give Disease (old)"
-	set desc = "Gives a (tg-style) Disease to a mob."
-	var/list/disease_names = list()
-	for(var/v in diseases)
-	//	"/datum/disease/" 15 symbols ~Intercross
-		disease_names.Add(copytext("[v]", 16, 0))
-	var/datum/disease/D = input("Choose the disease to give to that guy", "ACHOO") as null|anything in disease_names
-	if(!D) return
-	var/path = text2path("/datum/disease/[D]")
-	T.contract_disease(new path, 1)
-	feedback_add_details("admin_verb","GD") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
-	log_admin("[key_name(usr)] gave [key_name(T)] the disease [D].")
-	message_admins("\blue [key_name_admin(usr)] gave [key_name(T)] the disease [D].", 1)
 
 /client/proc/give_disease2(mob/T as mob in mob_list) // -- Giacom
 	set category = "Fun"
@@ -840,7 +822,7 @@ var/list/admin_verbs_mentor = list(
 	if(!istype(M, /mob/living/carbon/human))
 		usr << "\red You can only do this to humans!"
 		return
-	switch(alert("Are you sure you wish to edit this mob's appearance? Skrell, Unathi, Vox and Tajaran can result in unintended consequences.",,"Yes","No"))
+	switch(alert("Are you sure you wish to edit this mob's appearance? Skrell, Unathi, Tajaran can result in unintended consequences.",,"Yes","No"))
 		if("No")
 			return
 	var/new_facial = input("Please select facial hair color.", "Character Generation") as color

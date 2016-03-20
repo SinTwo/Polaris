@@ -6,6 +6,7 @@
 	w_class = 2.0
 	force = 2.0
 	det_time = null
+	unacidable = 1
 
 	var/stage = 0
 	var/state = 0
@@ -16,9 +17,7 @@
 	var/affected_area = 3
 
 	New()
-		var/datum/reagents/R = new/datum/reagents(1000)
-		reagents = R
-		R.my_atom = src
+		create_reagents(1000)
 
 	attack_self(mob/user as mob)
 		if(!stage || stage==1)
@@ -163,7 +162,7 @@
 		playsound(src.loc, 'sound/effects/bamf.ogg', 50, 1)
 
 		for(var/obj/item/weapon/reagent_containers/glass/G in beakers)
-			G.reagents.trans_to(src, G.reagents.total_volume)
+			G.reagents.trans_to_obj(src, G.reagents.total_volume)
 
 		if(src.reagents.total_volume) //The possible reactions didnt use up all reagents.
 			var/datum/effect/effect/system/steam_spread/steam = new /datum/effect/effect/system/steam_spread()

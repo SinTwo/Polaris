@@ -13,8 +13,6 @@
 		client.screen = list()
 	if(mind && mind.current == src)
 		spellremove(src)
-	for(var/infection in viruses)
-		qdel(infection)
 	ghostize()
 	..()
 
@@ -390,8 +388,8 @@
 		return
 	else
 		var/deathtime = world.time - src.timeofdeath
-		if(istype(src,/mob/dead/observer))
-			var/mob/dead/observer/G = src
+		if(istype(src,/mob/observer/dead))
+			var/mob/observer/dead/G = src
 			if(G.has_enabled_antagHUD == 1 && config.antag_hud_restricted)
 				usr << "\blue <B>Upon using the antagHUD you forfeighted the ability to join the round.</B>"
 				return
@@ -506,17 +504,6 @@
 				names.Add(name)
 				namecounts[name] = 1
 			creatures[name] = O
-
-		if(istype(O, /obj/machinery/bot))
-			var/name = "BOT: [O.name]"
-			if (names.Find(name))
-				namecounts[name]++
-				name = "[name] ([namecounts[name]])"
-			else
-				names.Add(name)
-				namecounts[name] = 1
-			creatures[name] = O
-
 
 	for(var/mob/M in sortAtom(mob_list))
 		var/name = M.name
@@ -719,17 +706,17 @@
 			if(!TurfAdjacent(listed_turf))
 				listed_turf = null
 			else
-				statpanel(listed_turf.name, null, listed_turf)
-				for(var/atom/A in listed_turf)
-					if(!A.mouse_opacity)
-						continue
-					if(A.invisibility > see_invisible)
-						continue
-					if(is_type_in_list(A, shouldnt_see))
-						continue
-					statpanel(listed_turf.name, null, A)
+				if(statpanel("Turf"))
+					stat("\icon[listed_turf]", listed_turf.name)
+					for(var/atom/A in listed_turf)
+						if(!A.mouse_opacity)
+							continue
+						if(A.invisibility > see_invisible)
+							continue
+						if(is_type_in_list(A, shouldnt_see))
+							continue
+						stat(A)
 
-	sleep(4) //Prevent updating the stat panel for the next .4 seconds, prevents clientside latency from updates
 
 // facing verbs
 /mob/proc/canface()

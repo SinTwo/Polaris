@@ -1,10 +1,4 @@
 // fun if you want to typecast humans/monkeys/etc without writing long path-filled lines.
-/proc/isxenomorph(A)
-	if(istype(A, /mob/living/carbon/human))
-		var/mob/living/carbon/human/H = A
-		return istype(H.species, /datum/species/xenos)
-	return 0
-
 /proc/issmall(A)
 	if(A && istype(A, /mob/living))
 		var/mob/living/L = A
@@ -36,6 +30,12 @@ proc/isdeaf(A)
 		var/mob/M = A
 		return (M.sdisabilities & DEAF) || M.ear_deaf
 	return 0
+
+/mob/proc/get_ear_protection()
+	return 0
+
+/mob/proc/break_cloak()
+	return
 
 proc/hasorgans(A) // Fucking really??
 	return ishuman(A)
@@ -266,7 +266,7 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 
 		var/atom/oldeye=M.client.eye
 		var/aiEyeFlag = 0
-		if(istype(oldeye, /mob/eye/aiEye))
+		if(istype(oldeye, /mob/observer/eye/aiEye))
 			aiEyeFlag = 1
 
 		var/x
@@ -399,8 +399,8 @@ proc/is_blind(A)
 					follow = "([ghost_follow_link(subject, M)]) "
 				if(M.stat != DEAD && M.client.holder)
 					follow = "([admin_jump_link(subject, M.client.holder)]) "
-				var/mob/dead/observer/DM
-				if(istype(subject, /mob/dead/observer))
+				var/mob/observer/dead/DM
+				if(istype(subject, /mob/observer/dead))
 					DM = subject
 				if(M.client.holder) 							// What admins see
 					lname = "[keyname][(DM && DM.anonsay) ? "*" : (DM ? "" : "^")] ([name])"
@@ -465,6 +465,12 @@ proc/is_blind(A)
 // Returns true if the mob has a client which has been active in the last given X minutes.
 /mob/proc/is_client_active(var/active = 1)
 	return client && client.inactivity < active MINUTES
+
+/mob/proc/can_eat()
+	return 1
+
+/mob/proc/can_force_feed()
+	return 1
 
 #define SAFE_PERP -50
 /mob/living/proc/assess_perp(var/obj/access_obj, var/check_access, var/auth_weapons, var/check_records, var/check_arrest)

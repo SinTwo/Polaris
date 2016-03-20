@@ -11,6 +11,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	item_state = "electronic"
 	w_class = 2.0
 	slot_flags = SLOT_ID | SLOT_BELT
+	sprite_sheets = list("Teshari" = 'icons/mob/species/seromi/id.dmi')
 
 	//Main variables
 	var/pdachoice = 1
@@ -234,7 +235,6 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		ownrank = ownjob
 	name = newname + " (" + ownjob + ")"
 
-
 //AI verb and proc for sending PDA messages.
 /obj/item/device/pda/ai/verb/cmd_send_pdamesg()
 	set category = "AI IM"
@@ -251,7 +251,6 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		var/selected = plist[c]
 		create_message(usr, selected, 0)
 
-
 /obj/item/device/pda/ai/verb/cmd_toggle_pda_receiver()
 	set category = "AI IM"
 	set name = "Toggle Sender/Receiver"
@@ -261,7 +260,6 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		return
 	toff = !toff
 	usr << "<span class='notice'>PDA sender/receiver toggled [(toff ? "Off" : "On")]!</span>"
-
 
 /obj/item/device/pda/ai/verb/cmd_toggle_pda_silent()
 	set category = "AI IM"
@@ -322,10 +320,10 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		if(1) icon = 'icons/obj/pda.dmi'
 		if(2) icon = 'icons/obj/pda_slim.dmi'
 		if(3) icon = 'icons/obj/pda_old.dmi'
-		else 
+		else
 			icon = 'icons/obj/pda_old.dmi'
 			log_debug("Invalid switch for PDA, defaulting to old PDA icons. [pdachoice] chosen.")
-		
+
 
 /obj/item/device/pda/proc/can_use()
 
@@ -419,8 +417,8 @@ var/global/list/obj/item/device/pda/PDAs = list()
 					cartdata["radio"] = 1
 				if(istype(cartridge.radio, /obj/item/radio/integrated/signal))
 					cartdata["radio"] = 2
-				if(istype(cartridge.radio, /obj/item/radio/integrated/mule))
-					cartdata["radio"] = 3
+				//if(istype(cartridge.radio, /obj/item/radio/integrated/mule))
+				//	cartdata["radio"] = 3
 
 		if(mode == 2)
 			cartdata["charges"] = cartridge.charges ? cartridge.charges : 0
@@ -1245,10 +1243,6 @@ var/global/list/obj/item/device/pda/PDAs = list()
 									capitalize(org.name), (org.brute_dam > 0) ? "warning" : "notice", org.brute_dam, (org.burn_dam > 0) ? "warning" : "notice", org.burn_dam),1)
 					else
 						user.show_message("<span class='notice'>    Limbs are OK.</span>",1)
-
-				for(var/datum/disease/D in C.viruses)
-					if(!D.hidden[SCANNER])
-						user.show_message("<span class='warning'><b>Warning: [D.form] Detected</b>\nName: [D.name].\nType: [D.spread].\nStage: [D.stage]/[D.max_stages].\nPossible Cure: [D.cure]</span>")
 
 			if(2)
 				if (!istype(C:dna, /datum/dna))
