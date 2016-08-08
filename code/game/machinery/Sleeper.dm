@@ -35,6 +35,8 @@
 		findsleeper()
 		if(sleeper)
 			return sleeper.ui_interact(user)
+	else if(sleeper)
+		return sleeper.ui_interact(user)
 	else
 		user << "<span class='warning'>Sleeper not found!</span>"
 

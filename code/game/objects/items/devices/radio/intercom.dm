@@ -109,6 +109,7 @@
 		A.circuit = M
 		A.set_dir(dir)
 		A.anchored = 1
+		A.density = 0
 		A.state = 2
 		A.update_icon()
 		M.deconstruct(src)

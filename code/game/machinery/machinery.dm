@@ -339,19 +339,19 @@ Class Procs:
 			user << "<span class='notice'>You disconnect the monitor.</span>"
 		. = dismantle()
 
-/obj/machinery/proc/alarm_deconstruction_screwdriver(var/mob/user, var/obj/item/weapon/screwdriver/S, var/wiresexposed)
+/obj/machinery/proc/alarm_deconstruction_screwdriver(var/mob/user, var/obj/item/weapon/screwdriver/S)
 	if(!istype(S))
 		return 0
 	playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
-	wiresexposed = !wiresexposed
-	user << "The wires have been [wiresexposed ? "exposed" : "unexposed"]"
+	panel_open = !panel_open
+	user << "The wires have been [panel_open ? "exposed" : "unexposed"]"
 	update_icon()
 	return 1
 
-/obj/machinery/proc/alarm_deconstruction_wirecutters(var/mob/user, var/obj/item/weapon/wirecutters/W, var/wiresexposed)
+/obj/machinery/proc/alarm_deconstruction_wirecutters(var/mob/user, var/obj/item/weapon/wirecutters/W)
 	if(!istype(W))
 		return 0
-	if(!wiresexposed)
+	if(!panel_open)
 		return 0
 	user.visible_message("<span class='warning'>[user] has cut the wires inside \the [src]!</span>", "You have cut the wires inside \the [src].")
 	playsound(src.loc, 'sound/items/Wirecutter.ogg', 50, 1)
@@ -381,6 +381,7 @@ Class Procs:
 
 	if(A.frame_type.frame_class == "alarm")
 		A.state = 2
+		A.density = 0
 	else if(A.frame_type.frame_class == "computer" || A.frame_type.frame_class == "display")
 		if(stat & BROKEN)
 			A.state = 3

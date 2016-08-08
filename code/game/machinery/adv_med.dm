@@ -246,7 +246,10 @@
 		return
 
 	if(!scanner)
-		user << "<span class='warning'>Scanner not found!</span>"
+		findscanner()
+		if(!scanner)
+			user << "<span class='warning'>Scanner not found!</span>"
+			return
 
 	ui_interact(user)
 

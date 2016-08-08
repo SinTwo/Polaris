@@ -51,7 +51,7 @@
 	var/rcon_setting = 2
 	var/rcon_time = 0
 	var/locked = 1
-	var/wiresexposed = 0 // If it's been screwdrivered open.
+	panel_open = 0 // If it's been screwdrivered open.
 	var/aidisabled = 0
 	var/shorted = 0
 	circuit = /obj/item/weapon/circuitboard/airalarm
@@ -286,7 +286,7 @@
 	return 0
 
 /obj/machinery/alarm/update_icon()
-	if(wiresexposed)
+	if(panel_open)
 		icon_state = "alarmx"
 		set_light(0)
 		return
@@ -746,9 +746,9 @@
 /obj/machinery/alarm/attackby(obj/item/W as obj, mob/user as mob)
 	src.add_fingerprint(user)
 
-	if(alarm_deconstruction_screwdriver(user, W, wiresexposed))
+	if(alarm_deconstruction_screwdriver(user, W))
 		return
-	if(alarm_deconstruction_wirecutters(user, W, wiresexposed))
+	if(alarm_deconstruction_wirecutters(user, W))
 		return
 
 	if (istype(W, /obj/item/weapon/card/id) || istype(W, /obj/item/device/pda))// trying to unlock the interface with an ID card
@@ -801,14 +801,14 @@ FIRE ALARM
 	active_power_usage = 6
 	power_channel = ENVIRON
 	var/last_process = 0
-	var/wiresexposed = 0
+	panel_open = 0
 	var/seclevel
 	circuit = /obj/item/weapon/circuitboard/firealarm
 
 /obj/machinery/firealarm/update_icon()
 	overlays.Cut()
 
-	if(wiresexposed)
+	if(panel_open)
 		set_light(0)
 		return
 
@@ -852,12 +852,12 @@ FIRE ALARM
 /obj/machinery/firealarm/attackby(obj/item/W as obj, mob/user as mob)
 	src.add_fingerprint(user)
 
-	if(alarm_deconstruction_screwdriver(user, W, wiresexposed))
+	if(alarm_deconstruction_screwdriver(user, W))
 		return
-	if(alarm_deconstruction_wirecutters(user, W, wiresexposed))
+	if(alarm_deconstruction_wirecutters(user, W))
 		return
 
-	if(wiresexposed)
+	if(panel_open)
 		if (istype(W, /obj/item/device/multitool))
 			src.detecting = !( src.detecting )
 			if (src.detecting)
