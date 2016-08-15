@@ -1603,7 +1603,6 @@
 				where = "onfloor"
 
 		if ( where == "inmarked" )
-			var/marked_datum = marked_datum()
 			if ( !marked_datum )
 				usr << "You don't have any object marked. Abandoning spawn."
 				return
@@ -1621,7 +1620,7 @@
 					if ("relative")
 						target = locate(loc.x + X,loc.y + Y,loc.z + Z)
 			if ( "inmarked" )
-				target = marked_datum()
+				target = marked_datum
 
 		if(target)
 			for (var/path in paths)
