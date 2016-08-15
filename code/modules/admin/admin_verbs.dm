@@ -96,8 +96,7 @@ var/list/admin_verbs_admin = list(
 	/client/proc/toggle_debug_logs,
 	/client/proc/toggle_attack_logs,
 	/datum/admins/proc/paralyze_mob,
-	/client/proc/fixatmos,
-	/datum/admins/proc/sendFax
+	/client/proc/fixatmos
 )
 var/list/admin_verbs_ban = list(
 	/client/proc/unban_panel,
@@ -306,9 +305,7 @@ var/list/admin_verbs_mod = list(
 	/client/proc/cmd_admin_subtle_message, 	//send an message to somebody as a 'voice in their head',
 	/datum/admins/proc/paralyze_mob,
 	/client/proc/cmd_admin_direct_narrate,
-	/client/proc/allow_character_respawn,   // Allows a ghost to respawn ,
-	/datum/admins/proc/sendFax
-
+	/client/proc/allow_character_respawn    // Allows a ghost to respawn ,
 )
 
 var/list/admin_verbs_mentor = list(

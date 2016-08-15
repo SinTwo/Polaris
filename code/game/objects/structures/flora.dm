@@ -75,7 +75,6 @@
 
 /obj/structure/flora/pottedplant
 	name = "potted plant"
-	desc = "Really ties the room together."
 	icon = 'icons/obj/plants.dmi'
 	icon_state = "plant-26"
 

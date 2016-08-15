@@ -1,5 +1,3 @@
-//TODO: Make this match current lore
-
 //S'randarr
 
 /datum/locations/s_randarr
